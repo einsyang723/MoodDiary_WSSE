@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="x-rim-auto-match" content="none">
+    <meta property="og:type" content="website">
+    <!--meta(property="og:url" content="https://jarvis.huihuidesign.com.tw/jarvis-course/megaport/")-->
+    <meta property="og:image" content="img/logo/mood.png">
+    <meta property="og:description" content="隨時記錄自己的心情, 察覺情緒是很重要的喔！">
+    <meta name="description" content="隨時記錄自己的心情, 察覺情緒是很重要的喔！">
+    <link rel="shortcut icon" href="img/logo/mood.png" type="image/png">
+    <link rel="apple-touch-icon" href="img/logo/mood.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <!--link(href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous")-->
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/all.css">
+    <meta property="og:title" content="MOOD 情緒日記">
+    <title>MOOD 情緒日記</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <header class="l-header">
+      <div class="c-event">
+        <div class="event_1">
+          <div class="evnt_wrap"> 
+            <div class="event_desc">今天做了什麼？</div><i class="fa-solid fa-sort-down icon_down"></i>
+          </div>
+        </div>
+        <div class="event_2">
+          <ul class="group g_social"> 
+            <div class="g_title">社交</div>
+            <div class="g_social g_inside">
+              <li class="g_li"><i class="fa-solid fa-people-roof"></i>
+                <div class="desc">家庭</div>
+              </li>
+              <li class="g_li"><i class="fa-solid fa-people-robbery"></i>
+                <div class="desc">朋友</div>
+              </li>
+              <li class="g_li"> <i class="fa-solid fa-heart"></i>
+                <div class="desc">約會</div>
+              </li>
+              <li class="g_li"> <i class="fa-solid fa-champagne-glasses"></i>
+                <div class="desc">派對</div>
+              </li>
+            </div>
+          </ul>
+          <ul class="group g_interest"> 
+            <div class="g_title">興趣</div>
+            <div class="g_interest g_inside">
+              <li class="g_li"> <i class="fa-solid fa-film"></i>
+                <div class="desc">電視電影</div>
+              </li>
+              <li class="g_li"> <i class="fa-solid fa-book-open"></i>
+                <div class="desc">閱讀</div>
+              </li>
+              <li class="g_li"> <i class="fa-solid fa-gamepad"></i>
+                <div class="desc">遊戲</div>
+              </li>
+              <li class="g_li"> <i class="fa-solid fa-person-running"></i>
+                <div class="desc">運動</div>
+              </li>
+              <li class="g_li"> <i class="fa-solid fa-umbrella-beach"></i>
+                <div class="desc">放鬆</div>
+              </li>
+            </div>
+          </ul>
+          <ul class="group g_sleep">
+            <div class="g_title">睡眠</div>
+            <div class="g_sleep g_inside">
+              <li class="g_li"> <i class="fa-solid fa-moon"></i>
+                <div class="desc">睡得好</div>
+              </li>
+              <li class="g_li"><i class="fa-solid fa-bed"></i>
+                <div class="desc">睡得普通</div>
+              </li>
+              <li class="g_li"> <i class="fa-solid fa-couch"></i>
+                <div class="desc">睡得差</div>
+              </li>
+            </div>
+          </ul>
+          <ul class="group g_food"> 
+            <div class="g_title">食物</div>
+            <div class="g_food g_inside">
+              <li class="g_li"> <i class="fa-solid fa-basket-shopping"></i>
+                <div class="desc">外送</div>
+              </li>
+              <li class="g_li"> <i class="fa-solid fa-utensils"></i>
+                <div class="desc">餐廳</div>
+              </li>
+              <li class="g_li"> <i class="fa-solid fa-kitchen-set"></i>
+                <div class="desc">在家煮</div>
+              </li>
+              <li class="g_li"> <i class="fa-solid fa-seedling"></i>
+                <div class="desc">沒有肉</div>
+              </li>
+            </div>
+            <div class="g_food_2 g_inside">
+              <li class="g_li"> <i class="fa-solid fa-carrot"></i>
+                <div class="desc">健康</div>
+              </li>
+              <li class="g_li"> <i class="fa-solid fa-cheese"></i>
+                <div class="desc">無糖</div>
+              </li>
+              <li class="g_li"> <i class="fa-solid fa-martini-glass-citrus"></i>
+                <div class="desc">無汽水</div>
+              </li>
+              <li class="g_li"> <i class="fa-solid fa-burger"></i>
+                <div class="desc">速食</div>
+              </li>
+            </div>
+          </ul>
+          <div class="evnt_wrap">
+            <div class="event_desc">今天做了什麼？</div><i class="fa-solid fa-sort-up icon_up"></i>
+          </div>
+        </div>
+      </div>
+      <div class="l-card">
+        <div class="c-header">
+          <div class="date_wrap">
+            <div class="date">10月10日</div>
+            <div class="time">22:01</div>
+          </div>
+          <div class="finish">完成</div>
+        </div>
+        <textarea class="c-card_big" id="diary" name="diary" placeholder="寫下今天發生的事吧..."> </textarea>
+      </div>
+    </header>
+    <script src="js/main.js"></script>
+    <script src="js/analyze.js"></script>
+    <script src="js/card.js"></script>
+    <script src="js/diary.js"></script>
+    <script src="js/emotion.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+    <script src="https://kit.fontawesome.com/175bc02a93.js" crossorigin="anonymous"></script>
+  </body>
+</html>
