@@ -16,7 +16,7 @@ class MemberManage extends BaseController
 
         return $this->respond([
             "status" => true,
-            "data"   => "Welcome member ".$memberdata,
+            "data"   => $memberdata,
             "msg"    => "Welcome member ".$memberdata
         ]);
     }

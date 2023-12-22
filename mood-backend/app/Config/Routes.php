@@ -51,6 +51,11 @@ $routes->group('/', ['filter' => 'JwtAuth','ApiAccessFilter'], function($routes)
     $routes->get('/diarylist', 'Diary::index');
     $routes->post('/diarylist', 'Diary::addDiary');
     $routes->get('/diarylist/(:num)', 'Diary::perDiary/$1');
+    $routes->put('/diarylist/(:num)', 'Diary::updateDiary/$1');
+    $routes->delete('/diarylist/(:num)', 'Diary::deleteDiary/$1');
+
+    $routes->post('/changemonth', 'Diary::changeMonth');
+    $routes->post('/analysis', 'Diary::analysis');
 });
 
 /*
