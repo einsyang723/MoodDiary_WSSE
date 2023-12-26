@@ -38,11 +38,12 @@ $routes->get('/register', 'VisitorManage::renderRegisterPage');
 $routes->post('/register', 'VisitorManage::register');
 $routes->get('/login', 'VisitorManage::renderLoginPage');
 $routes->post('/login', 'VisitorManage::login');
+$routes->get('/login', 'VisitorManage::renderLoginPage');
+$routes->post('/reset', 'VisitorManage::reset');
 
 $routes->group('/', ['filter' => 'JwtAuth','ApiAccessFilter'], function($routes)
 {
     $routes->get('/home', 'MemberManage::index');
-    $routes->get('/logout', 'VisitorManage::logout');
 
     $routes->get('/editMemberData', 'MemberManage::renderEditMemberDataPage');
     $routes->put('/editMemberData', 'MemberManage::update');
@@ -55,7 +56,8 @@ $routes->group('/', ['filter' => 'JwtAuth','ApiAccessFilter'], function($routes)
     $routes->delete('/diarylist/(:num)', 'Diary::deleteDiary/$1');
 
     $routes->post('/changemonth', 'Diary::changeMonth');
-    $routes->post('/analysis', 'Diary::analysis');
+    $routes->get('/analysis', 'Diary::analysis');
+    $routes->post('/analysis', 'Diary::changeAnalysis');
 });
 
 /*

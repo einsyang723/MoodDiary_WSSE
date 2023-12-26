@@ -121,9 +121,28 @@ class VisitorManage extends BaseController
         ]);
     }
 
-    public function logout()
+    public function reset()
     {
-        $this->session->destroy();
-        return redirect()->to("/");
+        $data = $this->request->getPost();
+
+        $account    = $data['account'] ?? null;
+
+        $membersModel = new MembersModel();
+        $verifyUserData = $membersModel->where("m_account", $account)->first();
+
+        if($verifyUserData === null) {
+            return $this->fail("查無此帳號", 404);
+        }
+
+        $updateValues = [
+            'm_password' =>  password_hash($verifyUserData['m_name'].'123456', PASSWORD_DEFAULT),
+        ];
+        $membersModel->update($verifyUserData['m_id'], $updateValues);
+
+        return $this->respond([
+            "status" => true,
+            "data"   => "個人資料修改成功",
+            "msg"    => "個人資料修改成功"
+        ]);
     }
 }

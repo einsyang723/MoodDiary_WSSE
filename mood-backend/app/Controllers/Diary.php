@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use CodeIgniter\API\ResponseTrait;
 use App\Models\DiarysModel;
+use CodeIgniter\Database\RawSql;
 
 class Diary extends BaseController
 {
@@ -242,17 +243,99 @@ class Diary extends BaseController
     {
         $m_id = session()->get("memberdata")->m_id;
 
+        $diarysModel = new DiarysModel();
+        $date_from = $diarysModel->where('m_id', $m_id)
+                                            ->orderBy('d_date','ASC')
+                                            ->first();
+        $date_to = $diarysModel->where('m_id', $m_id)
+                                            ->orderBy('d_date','DESC')
+                                            ->first();
+
+        if(empty($date_from) || empty($date_to)){
+            return $this->fail("查無日記", 404);
+        }
+
+        $startDate = new \DateTime($date_from['d_date']);
+        $endDate = new \DateTime($date_to['d_date']);
+        $endDate->modify('+1 day');
+        $interval = new \DateInterval('P1D');
+        $datePeriod = new \DatePeriod($startDate, $interval, $endDate);
+        $dateStringArray = array_map(function ($date) {
+            return $date->format('Y-m-d');
+        }, iterator_to_array($datePeriod));
+
+        $returnData['diaryData']['select_date'] = array();
+        $returnData['diaryData']['value'] = array();
+        foreach($dateStringArray as $d){
+            $temp = null;
+            array_push($returnData['diaryData']['select_date'], $d);
+            $temp = $diarysModel->where('d_date', $d)
+                                    ->where('m_id', $m_id)
+                                    ->orderBy('d_date','ASC')
+                                    ->findAll() ?? null;
+
+            if($temp === null || empty($temp)){
+                array_push($returnData['diaryData']['value'], 0);
+            }else{
+                array_push($returnData['diaryData']['value'], intval($temp[0]['d_feeling']));
+            }
+        }
+        
+        if($returnData['diaryData'] === null || empty($returnData['diaryData'])) {
+            return $this->fail("查無日記", 404);
+        }
+
+        return $this->respond([
+            "status" => true,
+            "data"   => $returnData,
+            "msg"    => "success"
+        ]);
+    }
+
+    public function changeAnalysis()
+    {
+        $m_id = session()->get("memberdata")->m_id;
+
         $data = $this->request->getPost();
 
         $date_from   = $data['date_from'] ?? null;
         $date_to     = $data['date_to'] ?? null;
 
+        if($date_from === null || $date_to === null) {
+            return $this->fail("需要日期進行查詢", 404);
+        }
+
+        if($date_from === " " || $date_to === " ") {
+            return $this->fail("需要日期進行查詢", 404);
+        }
+
+        $startDate = new \DateTime($date_from);
+        $endDate = new \DateTime($date_to);
+        $endDate->modify('+1 day');
+        $interval = new \DateInterval('P1D');
+        $datePeriod = new \DatePeriod($startDate, $interval, $endDate);
+        $dateStringArray = array_map(function ($date) {
+            return $date->format('Y-m-d');
+        }, iterator_to_array($datePeriod));
+
         $diarysModel = new DiarysModel();
-        $returnData['diaryData'] = $diarysModel->select('d_date, d_feeling')
-                                            ->where('m_id', $m_id)
-                                            ->where("d_date BETWEEN '{$date_from}' AND '{$date_to}'")
-                                            ->orderBy('d_date','ASC')
-                                            ->findAll();
+
+        $returnData['diaryData']['select_date'] = array();
+        $returnData['diaryData']['value'] = array();
+        foreach($dateStringArray as $d){
+            $temp = null;
+            array_push($returnData['diaryData']['select_date'], $d);
+            $temp = $diarysModel->where('d_date', $d)
+                                    ->where('m_id', $m_id)
+                                    ->orderBy('d_date','ASC')
+                                    ->findAll() ?? null;
+
+            if($temp === null || empty($temp)){
+                array_push($returnData['diaryData']['value'], 0);
+            }else{
+                array_push($returnData['diaryData']['value'], intval($temp[0]['d_feeling']));
+            }
+        }
         
         if($returnData['diaryData'] === null || empty($returnData['diaryData'])) {
             return $this->fail("查無日記", 404);
