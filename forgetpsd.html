@@ -89,7 +89,8 @@
                   round
                   style="background-color: black; color: white; width: 400px"
                   size="large"
-                  >送出驗證碼</el-button
+                  @click="handleForgetPsd"
+                  >確認</el-button
                 >
               </el-row>
               <el-row justify="center">
@@ -121,6 +122,9 @@
           handleClick(tab, event) {},
           handleBack() {
             history.go(-1);
+          },
+          handleForgetPsd() {
+            
           },
         },
       };
