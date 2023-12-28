@@ -72,6 +72,7 @@ section {
 }
 
 .l-header {
+  position: relative;
   width: 100%;
   height: 100vh;
   display: -webkit-box;
@@ -108,6 +109,37 @@ section {
   position: sticky;
   font-size: 32px;
 }
+
+.icon{
+  position: absolute;
+  right: 0;
+  margin: 5px;
+  padding: 5px;
+}
+
+.icon ul{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon ul li{
+  margin: 5px;
+  font-size: 18px;
+  cursor: pointer;
+}
+.icon ul li:hover{
+  color: #979797;
+}
+.icon input[type="radio"] {
+  display: none;
+}
+
+input:checked+{
+  color: #979797;
+  cursor: default;
+}
+
 .l-card .btn_analyze {
   position: sticky;
   display: -webkit-box;
@@ -210,6 +242,14 @@ section {
   padding: 15px;
   background-color: #fff;
   border-radius: 5px;
+}
+
+.c-card_week{
+  display: flex;
+}
+
+.c-card_week_small{
+  background-color: #fff;
 }
 
 .emo_icon {

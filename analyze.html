@@ -1,30 +1,466 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="format-detection" content="telephone=no">
-    <meta http-equiv="x-rim-auto-match" content="none">
-    <meta property="og:type" content="website">
-    <!--meta(property="og:url" content="https://jarvis.huihuidesign.com.tw/jarvis-course/megaport/")-->
-    <meta property="og:image" content="img/logo/mood.png">
-    <meta property="og:description" content="隨時記錄自己的心情, 察覺情緒是很重要的喔！">
-    <meta name="description" content="隨時記錄自己的心情, 察覺情緒是很重要的喔！">
-    <link rel="shortcut icon" href="img/logo/mood.png" type="image/png">
-    <link rel="apple-touch-icon" href="img/logo/mood.png">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
-    <!--link(href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous")-->
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/all.css">
-    <meta property="og:title" content="MOOD 情緒日記">
+    <meta
+      property="og:description"
+      content="隨時記錄自己的心情, 察覺情緒是很重要的喔！"
+    />
+    <meta
+      name="description"
+      content="隨時記錄自己的心情, 察覺情緒是很重要的喔！"
+    />
+    <link rel="shortcut icon" href="img/logo/mood.png" type="image/png" />
+    <link rel="apple-touch-icon" href="img/logo/mood.png" />
+    <meta property="og:title" content="MOOD 情緒日記" />
     <title>MOOD 情緒日記</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <!-- Import style -->
+    <link
+      rel="stylesheet"
+      href="//cdn.jsdelivr.net/npm/element-plus/dist/index.css"
+    />
+    <!-- Import Vue 3 -->
+    <script src="//cdn.jsdelivr.net/npm/vue@3"></script>
+    <!-- Import component library -->
+    <script src="//cdn.jsdelivr.net/npm/element-plus"></script>
+    <!-- Import ECharts -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5"></script>
+    <script src="//cdn.jsdelivr.net/npm/@element-plus/icons-vue"></script>
+    <link
+      rel="stylesheet"
+      href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+      integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://kit.fontawesome.com/175bc02a93.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.2/axios.min.js"
+      integrity="sha512-b94Z6431JyXY14iSXwgzeZurHHRNkLt9d6bAHt7BZT38eqV+GyngIi/tVye4jBKPYQ2lBdRs0glww4fmpuLRwA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
   </head>
   <body>
-    <div id="app"> </div>
-    <canvas id="myChart" width="900px" height="500"></canvas>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
-    <script src="js/analyze.js"></script>
+    <style>
+      body {
+        background-color: #ededed;
+        /* background-color: black; */
+      }
+      .el-row {
+        margin-bottom: 20px;
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+      .modal {
+        width: 400px;
+        height: 500px;
+        border-radius: 10px;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 20px;
+        background-color: white;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      }
+      /* .box-card {
+        position: fixed;
+        z-index: 9998;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+      } */
+    </style>
+    <div id="app" class="modal-vue">
+      <el-container>
+        <el-header style="color: black">
+          <el-row type="flex" justify="space-between" align="middle">
+            <el-col style="font-size: 2em"> 情緒分析 </el-col>
+            <div class="icon">
+              <ul>
+                <li id="user" @click="open=true">
+                  <input type="radio" value="" /><i
+                    class="fa-solid fa-user"
+                  ></i>
+                </li>
+                <li id="analyze" @click="handleAnalyze">
+                  <input type="radio" value="" /><i
+                    class="fa-solid fa-chart-line"
+                  ></i>
+                </li>
+                <Teleport to="body">
+                  <div v-if="open" class="modal">
+                    <div>
+                      <el-row
+                        justify="center"
+                        style="color: black; font-size: 2em"
+                        >Mood Diary
+                      </el-row>
+                      <el-row justify="center"> </el-row>
+                      <el-row justify="center"> </el-row>
+                      <el-row
+                        justify="center"
+                        style="color: black; font-size: 1.6em"
+                        >個人資訊
+                      </el-row>
+                      <el-row
+                        justify="center"
+                        style="color: black; font-size: 1.4em"
+                      >
+                        電子信箱：<span style="color: #9e9e9e">{{email}}</span>
+                      </el-row>
+                      <el-row justify="center">
+                        <el-button
+                          round
+                          style="
+                            background-color: black;
+                            color: white;
+                            width: 320px;
+                          "
+                          @click="handleChangePsd"
+                          size="large"
+                          >更改密碼</el-button
+                        >
+                      </el-row>
+                      <el-row justify="center">
+                        <el-button
+                          round
+                          style="
+                            background-color: black;
+                            color: white;
+                            width: 320px;
+                          "
+                          @click="open = false"
+                          size="large"
+                          >關閉視窗</el-button
+                        >
+                      </el-row>
+                      <el-row justify="center">
+                        <el-button
+                          round
+                          style="
+                            background-color: black;
+                            color: white;
+                            width: 320px;
+                          "
+                          @click="handleLogout"
+                          size="large"
+                          >登出</el-button
+                        >
+                      </el-row>
+                    </div>
+                  </div>
+                </Teleport>
+                <Teleport to="body">
+                  <div v-if="changeopen" class="modal">
+                    <div>
+                      <el-row
+                        justify="center"
+                        style="color: black; font-size: 2em"
+                        >Mood Diary
+                      </el-row>
+                      <el-row justify="center"> </el-row>
+                      <el-row justify="center"> </el-row>
+                      <el-row
+                        justify="center"
+                        style="color: black; font-size: 1.6em"
+                        >個人資訊
+                      </el-row>
+                      <el-row
+                        justify="center"
+                        style="color: black; font-size: 1.4em"
+                      >
+                        電子信箱：<span style="color: #9e9e9e">{{email}}</span>
+                      </el-row>
+                      <el-row justify="center">
+                        <el-input
+                          style="width: 300px"
+                          placeholder="請輸入新密碼"
+                          v-model="password"
+                          clearable
+                          show-password
+                        ></el-input>
+                      </el-row>
+                      <el-row justify="center">
+                        <el-input
+                          style="width: 300px"
+                          placeholder="請再次輸入新密碼"
+                          v-model="passwordsure"
+                          clearable
+                          show-password
+                        ></el-input>
+                      </el-row>
+                      <el-row justify="center">
+                        <el-button
+                          round
+                          style="
+                            background-color: black;
+                            color: white;
+                            width: 320px;
+                          "
+                          size="large"
+                          >確認更改</el-button
+                        >
+                      </el-row>
+                      <el-row justify="center">
+                        <el-button
+                          round
+                          style="
+                            background-color: black;
+                            color: white;
+                            width: 320px;
+                          "
+                          @click="changeopen= false"
+                          size="large"
+                          >關閉視窗</el-button
+                        >
+                      </el-row>
+                    </div>
+                  </div>
+                </Teleport>
+                <li id="month" @click="handleIndex">
+                  <input type="radio" value="" /><i
+                    class="fa-solid fa-calendar-days"
+                  ></i>
+                </li>
+                <!-- <li id="week">
+                  <input type="radio" value="" /><i
+                    class="fa-solid fa-table-columns"
+                  ></i>
+                </li>
+                <li id="day">
+                  <input type="radio" value="" onclick="day(event)" /><i
+                    class="fa-regular fa-calendar"
+                  ></i>
+                </li>
+                <li id="list">
+                  <input
+                    type="radio"
+                    value=""
+                    checked="checked"
+                    onclick="list(event)"
+                  /><i class="fa-solid fa-list"></i>
+                </li> -->
+              </ul>
+            </div>
+          </el-row>
+        </el-header>
+        <el-main>
+          <el-row type="flex" justify="center" align="middle">
+            <el-card class="box-card">
+              <el-row :gutter="16" justify="center" align="middle">
+                <el-col :span="12">
+                  <el-date-picker
+                    v-model="timerange"
+                    type="daterange"
+                    value-format="YYYY-MM-DD"
+                    range-separator="到"
+                    start-placeholder="開始時間"
+                    end-placeholder="結束時間"
+                    size="large"
+                  >
+                  </el-date-picker>
+                </el-col>
+                <el-col :span="4">
+                  <el-button
+                    round
+                    size="large"
+                    style="background-color: black; color: white"
+                    @click="getData"
+                    >查看圖表</el-button
+                  >
+                </el-col>
+              </el-row>
+              <el-row type="flex" justify="center" align="middle">
+                <!-- ECharts 折线图容器 -->
+                <div id="line-chart" style="width: 800px; height: 400px"></div>
+              </el-row>
+              <el-row :gutter="20" align="bottom">
+                <el-col :span="4" style="font-size: 20px"> 心情對照表 </el-col>
+                <el-col :span="3">
+                  <img
+                    width="30px"
+                    height="30px"
+                    src="img/emotion/disappointed.png"
+                  />：1分</el-col
+                >
+                <el-col :span="3">
+                  <img
+                    width="30px"
+                    height="30px"
+                    src="img/emotion/sad.png"
+                  />：2分</el-col
+                >
+                <el-col :span="3">
+                  <img
+                    width="30px"
+                    height="30px"
+                    src="img/emotion/bored.png"
+                  />：3分</el-col
+                >
+                <el-col :span="3">
+                  <img
+                    width="30px"
+                    height="30px"
+                    src="img/emotion/smile.png"
+                  />：4分</el-col
+                >
+                <el-col :span="3">
+                  <img
+                    width="30px"
+                    height="30px"
+                    src="img/emotion/happy.png"
+                  />：5分</el-col
+                >
+              </el-row>
+            </el-card>
+          </el-row>
+        </el-main>
+      </el-container>
+    </div>
+    <script>
+      const App = {
+        data() {
+          return {
+            timerange: [],
+            open: false,
+            changeopen: false,
+            changePsd: true,
+            email: "",
+            password: "",
+            passwordsure: "",
+            x_data: [],
+            y_data: [],
+          };
+        },
+        mounted() {
+          // 在组件挂载后初始化 ECharts 图表
+          // this.initLineChart();
+          this.getAccount();
+          this.getInitDate();
+        },
+        methods: {
+          initLineChart() {
+            // 基于准备好的dom，初始化echarts实例
+            const myChart = echarts.init(document.getElementById("line-chart"));
+
+            // 指定图表的配置项和数据
+            const option = {
+              xAxis: {
+                type: "category",
+                data: this.x_data,
+              },
+              yAxis: {
+                type: "value",
+              },
+              series: [
+                {
+                  data: this.y_data,
+                  type: "line",
+                },
+              ],
+            };
+
+            // 使用刚指定的配置项和数据显示图表
+            myChart.setOption(option);
+          },
+          getData() {
+            const token = Cookies.get("jwtToken") ?? null;
+            const form = new FormData();
+            form.append("date_from", this.timerange[0]);
+            form.append("date_to", this.timerange[1]);
+            axios
+              .post("https://jybluega.com/mood-backend/analysis", form, {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              })
+              .then((response) => {
+                if (response.data.status == true) {
+                  let data = response.data.data.diaryData;
+                  this.x_data = data.select_date;
+                  this.y_data = data.value;
+                  this.initLineChart();
+                }
+              });
+          },
+          getInitDate() {
+            const token = Cookies.get("jwtToken") ?? null;
+            axios
+              .get("https://jybluega.com/mood-backend/analysis", {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              })
+              .then((response) => {
+                if (response.data.status == true) {
+                  let data = response.data.data.diaryData;
+                  this.x_data = data.select_date;
+                  this.y_data = data.value;
+                  this.initLineChart();
+                }
+              });
+          },
+          getAccount() {
+            const token = Cookies.get("jwtToken") ?? null;
+            axios
+              .get("https://jybluega.com/mood-backend/home", {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              })
+              .then((response) => {
+                if (response.data.status == true) {
+                  this.email = response.data.data;
+                }
+              });
+          },
+          handleLogout() {
+            Cookies.remove("jwtToken", { path: "" }); // removed!
+            window.location.href = "analyze.html";
+            // const token = Cookies.get("jwtToken") ?? null;
+            // // console.log(token);
+            // axios
+            //   .get("https://jybluega.com/mood-backend/logout", {
+            //     headers: {
+            //       Authorization: `Bearer ${token}`,
+            //     },
+            //   })
+            //   .then((response) => {
+            //     console.log(response.headers);
+            //     // Additional handling
+            //   });
+            // if (error.response && error.response.status === 302) {
+            //   console.log(
+            //     "Redirect location:",
+            //     error.response.headers.location
+            //   );
+            // } else {
+            //   console.error("Error during logout:", error);
+            // }
+          },
+          handleAnalyze() {
+            window.location.href = "analyze.html";
+          },
+          handleIndex() {
+            window.location.href = "index.html";
+          },
+          handleChangePsd() {
+            this.open = false;
+            this.changeopen = true;
+          },
+        },
+      };
+      const app = Vue.createApp(App);
+      app.use(ElementPlus);
+      app.mount("#app");
+    </script>
   </body>
 </html>

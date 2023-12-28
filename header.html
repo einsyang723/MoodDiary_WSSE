@@ -1,0 +1,26 @@
+<div class="l-card">
+  <div class="top">
+    <div class="title">日記</div>
+    <div class="icon">
+      <ul>
+        <li id="user"><input type="radio" value=""><i class="fa-solid fa-user"></i></li>
+        <li id="analyze"><input type="radio" value=""><i class="fa-solid fa-chart-line"></i></li>
+        <li id="month"><input type="radio" value=""><i class="fa-solid fa-calendar-days"></i></li>
+        <li id="week"><input type="radio" value=""><i class="fa-solid fa-table-columns"></i></li>
+        <li id="day"><input type="radio" value="" onclick="day(event)"><i class="fa-regular fa-calendar"></i></li>
+        <li id="list"><input type="radio" value="" checked="checked" onclick="list(event)"><i
+            class="fa-solid fa-list"></i></li>
+      </ul>
+    </div>
+  </div>
+  <div class="c-card">
+    <div class="monthly"></div>
+    <div class="weekly"></div>
+    <div class="daily"></div>
+    <div class="list"></div>
+  </div>
+  <div class="bottom">
+    <div class="btn_add">+ 添加一篇</div>
+    <div class="gradient"></div>
+  </div>
+</div>
