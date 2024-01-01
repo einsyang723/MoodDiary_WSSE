@@ -1,13 +1,23 @@
 // header();
 let calendarEvent = { "events": [] };
-
+function getCookie(name) {
+  const cookies = document.cookie.split(';');
+  for (const cookie of cookies) {
+    const [cookieName, cookieValue] = cookie.trim().split('=');
+    if (cookieName === name) {
+      return decodeURIComponent(cookieValue);
+    }
+  }
+  return null;
+}
 $(document).ready(function () {
-  const token = Cookies.get("jwtToken") ?? null;
+  const token = getCookie("jwtToken") ?? null;
+  console.log(token);
   $.ajax({
     url: 'https://jybluega.com/mood-backend/diarylist',
     type: 'GET',
     contentType: 'application/json',
-    headers: { "Authorization": `Bearer ${token}`},
+    headers: { "Authorization": "Bearer "+ token},
     // data: JSON.stringify({ 'sentance': sentance }),
     success: function (data) {
       diaryData = data.data.diaryData;
@@ -43,7 +53,7 @@ function diaryList(diaryData) {
         image = "../img/emotion/happy.png";
         break;
     }
-    calendarEvent["events"].push({ "title": element.d_mood,"feeling": element.d_feeling, "imageurl": image, "id": element.d_id,"mid": element.m_id, "start": element.d_date, "createTime": element.created_at });
+    calendarEvent["events"].push({ "title": element.d_mood, "feeling": element.d_feeling, "imageurl": image, "id": element.d_id, "mid": element.m_id, "start": element.d_date, "createTime": element.created_at });
     if (element.d_social != null && element.d_social != "") {
       calendarEvent["events"].push({ "title": element.d_social, "start": element.d_date + "T00:00:00", end: element.d_date + "T01:00:00" });
     }
@@ -100,7 +110,7 @@ function fullCalendar() {
       localStorage.setItem('arr_words', info.title)//(key,value);
       var myWindow = window.open("", "_self", "background-color: #eee");
       myWindow.document.write('<iframe width="100%" height="100%" src = "../diaryShow.html" > </iframe >');
-      
+
     }
   });
 
