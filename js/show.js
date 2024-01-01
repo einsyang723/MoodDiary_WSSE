@@ -1,5 +1,4 @@
 // header();
-var token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJtX2lkIjoiNSIsIm1fYWNjb3VudCI6InRpbmEwNzA3IiwibV9uYW1lIjoidiJ9.3N4nX0QmIwluxE01FkL_yIBbkMmjp09rTN1bmpnGTp8';
 let calendarEvent = { "events": [] };
 
 $(document).ready(function () {
