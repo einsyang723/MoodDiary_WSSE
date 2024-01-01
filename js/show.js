@@ -101,15 +101,16 @@ function fullCalendar() {
       console.log(info);
       console.log(info.createTime);
       const dateTimeString = info.createTime;
-      const dateObject = new Date(dateTimeString);
+      const dateString = info.start;
       console.log(dateObject.getDate());
       localStorage.setItem('dateTimeString', dateTimeString)//(key,value);
+      localStorage.setItem('dateString', dateString)//(key,value);
       localStorage.setItem('diaryID', info.id)//(key,value);
       localStorage.setItem('diaryMID', info.mid)//(key,value);
       localStorage.setItem('icon_emo', info.feeling)//(key,value);
       localStorage.setItem('arr_words', info.title)//(key,value);
       var myWindow = window.open("", "_self", "background-color: #eee");
-      myWindow.document.write('<iframe width="100%" height="100%" src = "https://einsyang723.github.io/MoodDiary_WSSE/diaryShow.html" > </iframe >');
+      myWindow.document.write('<iframe width="100%" height="100%" src = "../diaryShow.html" > </iframe >');
 
     }
   });
