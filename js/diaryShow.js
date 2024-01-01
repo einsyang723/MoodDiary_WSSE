@@ -7,6 +7,7 @@ let time = document.querySelector(".time");
 
 let date_store = "";
 const dateTimeString = localStorage.getItem('dateTimeString');
+const dateString = localStorage.getItem('dateString');
 console.log(dateTimeString);
 
 const diaryID = localStorage.getItem('diaryID');
