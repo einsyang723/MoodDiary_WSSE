@@ -102,7 +102,6 @@ function fullCalendar() {
       console.log(info.createTime);
       const dateTimeString = info.createTime;
       const dateString = info.start;
-      console.log(dateObject.getDate());
       localStorage.setItem('dateTimeString', dateTimeString)//(key,value);
       localStorage.setItem('dateString', dateString)//(key,value);
       localStorage.setItem('diaryID', info.id)//(key,value);
