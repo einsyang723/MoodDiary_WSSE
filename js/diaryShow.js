@@ -14,7 +14,19 @@ const diaryMID = localStorage.getItem('diaryMID');
 showTime();
 showDiary();
 
+function getCookie(name) {
+  const cookies = document.cookie.split(';');
+  for (const cookie of cookies) {
+    const [cookieName, cookieValue] = cookie.trim().split('=');
+    if (cookieName === name) {
+      return decodeURIComponent(cookieValue);
+    }
+  }
+  return null;
+}
+
 btn_finish.addEventListener("click", () => {
+  const token = getCookie("jwtToken") ?? null;
   const a = diary.value
   const icon_emo = localStorage.getItem('icon_emo');
   const arr_words = localStorage.getItem('arr_words');
@@ -27,7 +39,7 @@ btn_finish.addEventListener("click", () => {
     url: 'https://jybluega.com/mood-backend/diarylist/' + diaryID,
     type: 'PUT',
     // contentType: 'multipart/form-data',
-    headers: { "Authorization": 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJtX2lkIjoiNSIsIm1fYWNjb3VudCI6InRpbmEwNzA3IiwibV9uYW1lIjoidiJ9.3N4nX0QmIwluxE01FkL_yIBbkMmjp09rTN1bmpnGTp8' },
+    headers: { "Authorization": "Bearer "+ token},
     processData: false,  // 必須設置為 false，以防止 jQuery 將 data 轉換為字符串
     contentType: false,  // 必須設置為 false，以防止 jQuery 設置 Content-Type
     data: JSON.stringify(Object.fromEntries(form)),
@@ -41,11 +53,12 @@ btn_finish.addEventListener("click", () => {
 })
 
 btn_delete.addEventListener("click", () => {
+  const token = getCookie("jwtToken") ?? null;
   $.ajax({
     url: 'https://jybluega.com/mood-backend/diarylist/' + diaryID,
     type: 'DELETE',
     // contentType: 'multipart/form-data',
-    headers: { "Authorization": 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJtX2lkIjoiNSIsIm1fYWNjb3VudCI6InRpbmEwNzA3IiwibV9uYW1lIjoidiJ9.3N4nX0QmIwluxE01FkL_yIBbkMmjp09rTN1bmpnGTp8' },
+    headers: { "Authorization": "Bearer "+ token},
     processData: false,  // 必須設置為 false，以防止 jQuery 將 data 轉換為字符串
     contentType: false,  // 必須設置為 false，以防止 jQuery 設置 Content-Type
     success: function (data) {
@@ -59,7 +72,9 @@ btn_delete.addEventListener("click", () => {
 
 function showTime() {
   const dateObject = new Date(dateTimeString);
-  const dateText = (dateObject.getMonth() + 1) + "月" + dateObject.getDate() + "日";
+  const dateObject2 = new Date(dateString);
+  
+  const dateText = (dateObject2.getMonth() + 1) + "月" + dateObject2.getDate() + "日";
   console.log(dateText);
   const hour = dateObject.getHours()
   const min = dateObject.getMinutes()
@@ -71,11 +86,12 @@ function showTime() {
 }
 
 function showDiary() {
+  const token = getCookie("jwtToken") ?? null;
   $.ajax({
     url: 'https://jybluega.com/mood-backend/diarylist/' + diaryID,
     type: 'GET',
     // contentType: 'multipart/form-data',
-    headers: { "Authorization": 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJtX2lkIjoiNSIsIm1fYWNjb3VudCI6InRpbmEwNzA3IiwibV9uYW1lIjoidiJ9.3N4nX0QmIwluxE01FkL_yIBbkMmjp09rTN1bmpnGTp8' },
+    headers: { "Authorization": "Bearer "+ token},
     processData: false,  // 必須設置為 false，以防止 jQuery 將 data 轉換為字符串
     contentType: false,  // 必須設置為 false，以防止 jQuery 設置 Content-Type
     success: function (data) {
