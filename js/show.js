@@ -3,11 +3,12 @@ var token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJtX2lkIjoiNSIsIm1fYWNjb3VudC
 let calendarEvent = { "events": [] };
 
 $(document).ready(function () {
+  const token = Cookies.get("jwtToken") ?? null;
   $.ajax({
     url: 'https://jybluega.com/mood-backend/diarylist',
     type: 'GET',
     contentType: 'application/json',
-    headers: { "Authorization": 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJtX2lkIjoiNSIsIm1fYWNjb3VudCI6InRpbmEwNzA3IiwibV9uYW1lIjoidiJ9.3N4nX0QmIwluxE01FkL_yIBbkMmjp09rTN1bmpnGTp8' },
+    headers: { "Authorization": `Bearer ${token}`},
     // data: JSON.stringify({ 'sentance': sentance }),
     success: function (data) {
       diaryData = data.data.diaryData;
@@ -28,19 +29,19 @@ function diaryList(diaryData) {
     console.log(element.d_feeling);
     switch (element.d_feeling) {
       case '1':
-        image = "https://einsyang723.github.io/MoodDiary_WSSE/img/emotion/sad.png";
+        image = "../img/emotion/sad.png";
         break;
       case '2':
-        image = "https://einsyang723.github.io/MoodDiary_WSSE/img/emotion/disappointed.png";
+        image = "../img/emotion/disappointed.png";
         break;
       case '3':
-        image = "https://einsyang723.github.io/MoodDiary_WSSE/img/emotion/bored.png";
+        image = "../img/emotion/bored.png";
         break;
       case '4':
-        image = "https://einsyang723.github.io/MoodDiary_WSSE/img/emotion/smile.png";
+        image = "../img/emotion/smile.png";
         break;
       case '5':
-        image = "https://einsyang723.github.io/MoodDiary_WSSE/img/emotion/happy.png";
+        image = "../img/emotion/happy.png";
         break;
     }
     calendarEvent["events"].push({ "title": element.d_mood,"feeling": element.d_feeling, "imageurl": image, "id": element.d_id,"mid": element.m_id, "start": element.d_date, "createTime": element.created_at });
@@ -99,7 +100,7 @@ function fullCalendar() {
       localStorage.setItem('icon_emo', info.feeling)//(key,value);
       localStorage.setItem('arr_words', info.title)//(key,value);
       var myWindow = window.open("", "_self", "background-color: #eee");
-      myWindow.document.write('<iframe width="100%" height="100%" src = "https://einsyang723.github.io/MoodDiary_WSSE/diaryShow.html" > </iframe >');
+      myWindow.document.write('<iframe width="100%" height="100%" src = "../diaryShow.html" > </iframe >');
       
     }
   });

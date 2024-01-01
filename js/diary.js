@@ -48,6 +48,7 @@ btn_up.addEventListener("click", () => {
 
 
 btn_finish.addEventListener("click", () => {
+  const token = Cookies.get("jwtToken") ?? null;
   const a = diary.value
   const icon_emo = localStorage.getItem('icon_emo');
   const arr_words = localStorage.getItem('arr_words');
@@ -63,7 +64,7 @@ btn_finish.addEventListener("click", () => {
     url: 'https://jybluega.com/mood-backend/diarylist',
     type: 'POST',
     // contentType: 'multipart/form-data',
-    headers: { "Authorization": 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJtX2lkIjoiNSIsIm1fYWNjb3VudCI6InRpbmEwNzA3IiwibV9uYW1lIjoidiJ9.3N4nX0QmIwluxE01FkL_yIBbkMmjp09rTN1bmpnGTp8' },
+    headers: { "Authorization": `Bearer ${token}`},
     data: form,
     processData: false,  // 必須設置為 false，以防止 jQuery 將 data 轉換為字符串
     contentType: false,  // 必須設置為 false，以防止 jQuery 設置 Content-Type
