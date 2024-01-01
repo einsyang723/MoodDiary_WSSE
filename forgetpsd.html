@@ -20,6 +20,12 @@
     <script src="//cdn.jsdelivr.net/npm/vue@3"></script>
     <!-- Import component library -->
     <script src="//cdn.jsdelivr.net/npm/element-plus"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.2/axios.min.js"
+      integrity="sha512-b94Z6431JyXY14iSXwgzeZurHHRNkLt9d6bAHt7BZT38eqV+GyngIi/tVye4jBKPYQ2lBdRs0glww4fmpuLRwA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
   </head>
   <body>
     <style>
@@ -69,6 +75,19 @@
       .el-tabs__active-bar {
         background-color: black;
       }
+      .modal {
+        width: 400px;
+        height: 300px;
+        border-radius: 10px;
+        position: fixed;
+        z-index: 99;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 20px;
+        background-color: white;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      }
     </style>
     <div id="app">
       <el-row type="flex" justify="center" align="middle">
@@ -104,6 +123,32 @@
               </el-row>
             </el-tab-pane>
           </el-tabs>
+          <Teleport to="body">
+            <div v-if="open" class="modal">
+              <div>
+                <el-row justify="center" style="color: black; font-size: 2em"
+                  >Mood Diary
+                </el-row>
+                <el-row justify="center"> </el-row>
+                <el-row justify="center"> </el-row>
+                <el-row justify="center" style="color: black; font-size: 1.4em">
+                  已幫你預設新密碼為：<span style="color: #9e9e9e"
+                    >{{password}}</span
+                  >
+                </el-row>
+                <el-row justify="center"> 請登入帳號後更改密碼！ </el-row>
+                <el-row justify="center">
+                  <el-button
+                    round
+                    style="background-color: black; color: white; width: 320px"
+                    @click="open = false"
+                    size="large"
+                    >關閉視窗</el-button
+                  >
+                </el-row>
+              </div>
+            </div>
+          </Teleport>
         </el-card>
       </el-row>
     </div>
@@ -112,8 +157,8 @@
       const App = {
         data() {
           return {
-            message: "Hello Vue!",
             activeName: "login",
+            open: false,
             email: "",
             password: "",
           };
@@ -124,7 +169,23 @@
             history.go(-1);
           },
           handleForgetPsd() {
-            
+            const form = new FormData();
+            form.append("account", this.email);
+            axios
+              .post("https://jybluega.com/mood-backend/reset", form)
+              .then((response) => {
+                if (response.data.status == true) {
+                  this.password = response.data.data;
+                  this.open = true;
+                }
+              })
+              .catch((error) => {
+                // Handle errors
+                this.$message({
+                  message: `${error.response.data.messages.error}`,
+                  type: "error",
+                });
+              });
           },
         },
       };

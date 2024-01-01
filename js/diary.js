@@ -18,6 +18,7 @@ let date = document.querySelector(".date")
 let time = document.querySelector(".time")
 let index = tmp_diary.length - 1
 var count = 0
+let date_store = "";
 
 eventColor()
 getTime()
@@ -44,34 +45,35 @@ btn_up.addEventListener("click", () => {
   }, 1000)
 })
 
+
+
 btn_finish.addEventListener("click", () => {
   const a = diary.value
-  // console.log(a)
-  const icon_emo = localStorage.getItem('icon_emo')
-  const arr_words = localStorage.getItem('arr_words')
-  tmp_diary[index].icon_emo = icon_emo
-  tmp_diary[index].arr_words = arr_words
-  tmp_diary[index].date = date.textContent
-  tmp_diary[index].time = time.textContent
-  tmp_diary[index].arr_event = arr_event
-  tmp_diary[index].diary = a
-  index++
-  count = 1
-  tmp_diary.push({})
-  // tmp_diary.icon_emo = icon_emo
-  // tmp_diary.arr_words = arr_words
-  // tmp_diary.date = date.textContent
-  // tmp_diary.time = time.textContent
-  // tmp_diary.arr_event = arr_event
-  // tmp_diary.diary = a
-  console.log(tmp_diary[0]["date"])
-  console.log(tmp_diary[0]["icon_emo"])
-  console.log(JSON.stringify(tmp_diary))
-  // diary.value = JSON.stringify(tmp_diary)
-  localStorage.setItem('diary', JSON.stringify(tmp_diary))//(key,value)
-  // const diary_1 = JSON.parse(localStorage.getItem('diary'))
-  // console.log(diary_1[0]["date"])
-  window.location.assign("index.html")
+  const icon_emo = localStorage.getItem('icon_emo');
+  const arr_words = localStorage.getItem('arr_words');
+  const form = new FormData();
+  form.append("date", date_store);
+  form.append("feeling", icon_emo);
+  form.append("mood", arr_words);
+  form.append("activity", arr_event);
+  form.append("social", a);
+  console.log(typeof (form.get('feeling')));
+
+  $.ajax({
+    url: 'https://jybluega.com/mood-backend/diarylist',
+    type: 'POST',
+    // contentType: 'multipart/form-data',
+    headers: { "Authorization": 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJtX2lkIjoiNSIsIm1fYWNjb3VudCI6InRpbmEwNzA3IiwibV9uYW1lIjoidiJ9.3N4nX0QmIwluxE01FkL_yIBbkMmjp09rTN1bmpnGTp8' },
+    data: form,
+    processData: false,  // 必須設置為 false，以防止 jQuery 將 data 轉換為字符串
+    contentType: false,  // 必須設置為 false，以防止 jQuery 設置 Content-Type
+    success: function (data) {
+      window.location.assign("index.html");
+    },
+    error: function (xhr, status, error) {
+      console.error(xhr.responseText);
+    }
+  });
 })
 
 function eventColor() {
@@ -99,9 +101,18 @@ function eventColor() {
 }
 
 function getTime() {
-  let d = new Date()
-  const dateText = (d.getMonth() + 1) + "月" + d.getDate() + "日"
-  const timeText = d.getHours() + ":" + d.getMinutes()
-  date.textContent = dateText
-  time.textContent = timeText
+  let d = new Date();
+  const dateText = (d.getMonth() + 1) + "月" + d.getDate() + "日";
+  date_store = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+  // date_store = d;
+
+  console.log(date_store);
+  // const timeText = d.getHours() + ":" + d.getMinutes();
+  const hour = d.getHours()
+  const min = d.getMinutes()
+  const hourString = (hour < 10) ? ('0' + hour) : ('' + hour)
+  const minString = (min < 10) ? ('0' + min) : ('' + min)
+  date.textContent = dateText;
+  time.innerHTML = hourString + ':' + minString;
+  // console.log(time);  
 }

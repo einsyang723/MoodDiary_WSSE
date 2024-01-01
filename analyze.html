@@ -205,6 +205,7 @@
                             color: white;
                             width: 320px;
                           "
+                          @click="editpassword"
                           size="large"
                           >確認更改</el-button
                         >
@@ -424,7 +425,7 @@
           },
           handleLogout() {
             Cookies.remove("jwtToken", { path: "" }); // removed!
-            window.location.href = "analyze.html";
+            window.location.href = "login.html";
             // const token = Cookies.get("jwtToken") ?? null;
             // // console.log(token);
             // axios
@@ -455,6 +456,54 @@
           handleChangePsd() {
             this.open = false;
             this.changeopen = true;
+          },
+          editpassword() {
+            const token = Cookies.get("jwtToken") ?? null;
+            const form = new FormData();
+            form.append("password", this.password);
+            form.append("repassword", this.passwordsure);
+            if (this.password === this.passwordsure) {
+              axios
+                .put(
+                  "https://jybluega.com/mood-backend/edit",
+                  JSON.stringify(Object.fromEntries(form)),
+                  {
+                    headers: {
+                      Authorization: `Bearer ${token}`,
+                    },
+                  }
+                )
+                .then((response) => {
+                  if (response.data.status == true) {
+                    this.$message({
+                      message: `${response.data.msg}`,
+                      type: "success",
+                    });
+                    this.changeopen = false;
+                  } else {
+                    this.$message({
+                      message: `${response.data.messages.error}`,
+                      type: "error",
+                    });
+                  }
+                })
+                .catch((error) => {
+                  // Handle errors
+                  this.$message({
+                    message: `${error.response.data.messages.error}`,
+                    type: "error",
+                  });
+                })
+                .finally((res) => {
+                  this.password = "";
+                  this.passwordsure = "";
+                });
+            } else {
+              this.$message({
+                message: `兩組密碼不相等`,
+                type: "error",
+              });
+            }
           },
         },
       };
