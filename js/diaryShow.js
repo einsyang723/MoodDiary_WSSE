@@ -30,7 +30,7 @@ btn_finish.addEventListener("click", () => {
     headers: { "Authorization": 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJtX2lkIjoiNSIsIm1fYWNjb3VudCI6InRpbmEwNzA3IiwibV9uYW1lIjoidiJ9.3N4nX0QmIwluxE01FkL_yIBbkMmjp09rTN1bmpnGTp8' },
     processData: false,  // 必須設置為 false，以防止 jQuery 將 data 轉換為字符串
     contentType: false,  // 必須設置為 false，以防止 jQuery 設置 Content-Type
-    data: form,
+    data: JSON.stringify(Object.fromEntries(form)),
     success: function (data) {
       window.parent.location.reload();
     },
