@@ -28,19 +28,19 @@ function diaryList(diaryData) {
     console.log(element.d_feeling);
     switch (element.d_feeling) {
       case '1':
-        image = "img/emotion/sad.png";
+        image = "../../img/emotion/sad.png";
         break;
       case '2':
-        image = "img/emotion/disappointed.png";
+        image = "../../img/emotion/disappointed.png";
         break;
       case '3':
-        image = "img/emotion/bored.png";
+        image = "../../img/emotion/bored.png";
         break;
       case '4':
-        image = "img/emotion/smile.png";
+        image = "../../img/emotion/smile.png";
         break;
       case '5':
-        image = "img/emotion/happy.png";
+        image = "../../img/emotion/happy.png";
         break;
     }
     calendarEvent["events"].push({ "title": element.d_mood,"feeling": element.d_feeling, "imageurl": image, "id": element.d_id,"mid": element.m_id, "start": element.d_date, "createTime": element.created_at });
